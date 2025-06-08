@@ -47,41 +47,48 @@
       color: #a55b2f;
     }
 
-    input[type="text"] {
-    width: 70%;
-    padding: 12px 15px;
-    font-size: 1.1rem;
-    border-radius: 30px;
-    border: 2px solid #fcb69f;
-    outline: none;
-    margin-right: 15px;  /* <---- add this */
-    margin-bottom: 0;    /* <---- reset vertical margin */
-    transition: border-color 0.3s ease;
+    .input-group {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 15px;
     }
 
-input[type="text"]:focus {
-  border-color: #e36414;
-  box-shadow: 0 0 8px #e36414aa;
-}
+    input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 15px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: 2px solid #fcb69f;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
 
-button {
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  border-radius: 30px;
-  border: none;
-  background: #e36414;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  margin-left: 15px;   /* Increased margin from 10px to 15px */
-  transition: background 0.3s ease;
-  box-shadow: 0 5px 15px rgba(227, 100, 20, 0.4);
-}
+    input[type="text"]:focus {
+      border-color: #e36414;
+      box-shadow: 0 0 8px #e36414aa;
+    }
 
-button:hover {
-  background: #c5500f;
-  box-shadow: 0 7px 20px rgba(197, 80, 15, 0.6);
-}
+    button {
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: none;
+      background: #e36414;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 5px 15px rgba(227, 100, 20, 0.4);
+      flex-shrink: 0;
+    }
+
+    button:hover {
+      background: #c5500f;
+      box-shadow: 0 7px 20px rgba(197, 80, 15, 0.6);
+    }
 
     #recipeOutput {
       margin-top: 30px;
@@ -123,13 +130,19 @@ button:hover {
 
     /* Responsive */
     @media (max-width: 520px) {
+      .input-group {
+        flex-direction: column;
+      }
+
       input[type="text"] {
         width: 100%;
         margin-bottom: 15px;
+        flex: none;
       }
+
       button {
         width: 100%;
-        margin-left: 0;
+        flex: none;
       }
     }
   </style>
@@ -139,7 +152,7 @@ button:hover {
     <h1>Mood2Meal 🍲</h1>
     <p class="subtitle">Type your mood, and get a tasty recipe suggestion!</p>
 
-    <div>
+    <div class="input-group">
       <input id="moodInput" type="text" placeholder="e.g. happy, energetic, relaxed" aria-label="Enter your mood" />
       <button onclick="generateRecipe()" aria-label="Generate recipe">Get Recipe</button>
     </div>
@@ -239,4 +252,3 @@ button:hover {
   </script>
 </body>
 </html>
-
