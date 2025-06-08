@@ -48,38 +48,39 @@
     }
 
     input[type="text"] {
-      width: 70%;
-      padding: 12px 15px;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      border: 2px solid #fcb69f;
-      outline: none;
-      transition: border-color 0.3s ease;
-    }
+  width: 70%;
+  padding: 12px 15px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: 2px solid #fcb69f;
+  outline: none;
+  transition: border-color 0.3s ease;
+  /* No margin here, spacing handled on button */
+}
 
-    input[type="text"]:focus {
-      border-color: #e36414;
-      box-shadow: 0 0 8px #e36414aa;
-    }
+input[type="text"]:focus {
+  border-color: #e36414;
+  box-shadow: 0 0 8px #e36414aa;
+}
 
-    button {
-      padding: 12px 25px;
-      font-size: 1.1rem;
-      border-radius: 30px;
-      border: none;
-      background: #e36414;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: background 0.3s ease;
-      box-shadow: 0 5px 15px rgba(227, 100, 20, 0.4);
-    }
+button {
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  border: none;
+  background: #e36414;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 15px;   /* Increased margin from 10px to 15px */
+  transition: background 0.3s ease;
+  box-shadow: 0 5px 15px rgba(227, 100, 20, 0.4);
+}
 
-    button:hover {
-      background: #c5500f;
-      box-shadow: 0 7px 20px rgba(197, 80, 15, 0.6);
-    }
+button:hover {
+  background: #c5500f;
+  box-shadow: 0 7px 20px rgba(197, 80, 15, 0.6);
+}
 
     #recipeOutput {
       margin-top: 30px;
