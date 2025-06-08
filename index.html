@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mood2Meal - Recipe Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f9fafb;
+      color: #333;
+      text-align: center;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+    .recipe {
+      margin-top: 2rem;
+      background: #e0f7fa;
+      padding: 1rem;
+      border-radius: 5px;
+      min-height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mood2Meal</h1>
+  <p>Enter your mood and get a recipe suggestion!</p>
+  <input id="moodInput" type="text" placeholder="e.g. happy, sad, energetic" />
+  <button onclick="generateRecipe()">Get Recipe</button>
+
+  <div class="recipe" id="recipeOutput">Your recipe will appear here.</div>
+
+  <script>
+    const recipes = {
+      happy: "How about a bright Lemon Garlic Pasta? Zesty and refreshing!",
+      sad: "Try some comforting Chicken Soup to cheer you up.",
+      energetic: "Power up with a Protein Smoothie packed with fruits and nuts.",
+      relaxed: "Enjoy a light and calming Chamomile Tea with honey.",
+      hungry: "A classic Margherita Pizza is always a great choice!",
+      creative: "Get adventurous with a Spicy Thai Curry full of flavors.",
+      default: "Try a simple Avocado Toast with a sprinkle of chili flakes."
+    };
+
+    function generateRecipe() {
+      const mood = document.getElementById('moodInput').value.trim().toLowerCase();
+      const recipe = recipes[mood] || recipes['default'];
+      document.getElementById('recipeOutput').innerText = recipe;
+    }
+  </script>
+</body>
+</html>
