@@ -3,58 +3,238 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mood2Meal - Recipe Generator</title>
+  <title>Mood2Meal - AI Recipe Generator</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: #f9fafb;
-      color: #333;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4a342e;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: white;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 12px 30px rgba(252, 182, 159, 0.5);
       text-align: center;
+      user-select: none;
     }
-    input, button {
-      padding: 0.5rem;
-      font-size: 1rem;
+
+    h1 {
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 2.6rem;
+      color: #e36414;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
     }
+
+    p.subtitle {
+      margin-bottom: 25px;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: #a55b2f;
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 12px 15px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: 2px solid #fcb69f;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #e36414;
+      box-shadow: 0 0 8px #e36414aa;
+    }
+
     button {
-      margin-left: 0.5rem;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      border: none;
+      background: #e36414;
+      color: white;
+      font-weight: 700;
       cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.3s ease;
+      box-shadow: 0 5px 15px rgba(227, 100, 20, 0.4);
     }
-    .recipe {
-      margin-top: 2rem;
-      background: #e0f7fa;
-      padding: 1rem;
-      border-radius: 5px;
-      min-height: 80px;
+
+    button:hover {
+      background: #c5500f;
+      box-shadow: 0 7px 20px rgba(197, 80, 15, 0.6);
+    }
+
+    #recipeOutput {
+      margin-top: 30px;
+      text-align: left;
+      background: #fff3e0;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: inset 0 0 15px #fcb69f88;
+      min-height: 200px;
+      color: #4a342e;
+      line-height: 1.5;
+      user-select: text;
+    }
+
+    #recipeOutput h2 {
+      color: #d35400;
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+    }
+
+    #recipeOutput h3 {
+      margin: 15px 0 8px;
+      color: #e36414;
+      font-weight: 700;
+    }
+
+    #recipeOutput ul, #recipeOutput ol {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #a55b2f;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      input[type="text"] {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      button {
+        width: 100%;
+        margin-left: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Mood2Meal</h1>
-  <p>Enter your mood and get a recipe suggestion!</p>
-  <input id="moodInput" type="text" placeholder="e.g. happy, sad, energetic" />
-  <button onclick="generateRecipe()">Get Recipe</button>
+  <div class="container" role="main">
+    <h1>Mood2Meal 🍲</h1>
+    <p class="subtitle">Type your mood, and get a tasty recipe suggestion!</p>
 
-  <div class="recipe" id="recipeOutput">Your recipe will appear here.</div>
+    <div>
+      <input id="moodInput" type="text" placeholder="e.g. happy, energetic, relaxed" aria-label="Enter your mood" />
+      <button onclick="generateRecipe()" aria-label="Generate recipe">Get Recipe</button>
+    </div>
+
+    <div id="recipeOutput" aria-live="polite" aria-atomic="true">
+      Your recipe will appear here. Try typing a mood above!
+    </div>
+
+    <footer>
+      &copy; 2025 Mood2Meal &nbsp;|&nbsp; Made with ❤️ by Harish
+    </footer>
+  </div>
 
   <script>
-    const recipes = {
-      happy: "How about a bright Lemon Garlic Pasta? Zesty and refreshing!",
-      sad: "Try some comforting Chicken Soup to cheer you up.",
-      energetic: "Power up with a Protein Smoothie packed with fruits and nuts.",
-      relaxed: "Enjoy a light and calming Chamomile Tea with honey.",
-      hungry: "A classic Margherita Pizza is always a great choice!",
-      creative: "Get adventurous with a Spicy Thai Curry full of flavors.",
-      default: "Try a simple Avocado Toast with a sprinkle of chili flakes."
+    const moodData = {
+      happy: {
+        ingredients: ["lemon", "garlic", "basil", "chicken", "pasta", "tomato", "parmesan", "olive oil"],
+        cookingStyles: ["grilled", "baked", "sauteed", "fresh", "zesty"],
+        dishTypes: ["pasta", "salad", "sandwich", "wrap", "skillet"]
+      },
+      sad: {
+        ingredients: ["chicken", "carrot", "potato", "ginger", "broth", "noodles", "onion", "celery"],
+        cookingStyles: ["slow-cooked", "comfort", "warm", "soft", "hearty"],
+        dishTypes: ["soup", "stew", "casserole", "porridge", "bowl"]
+      },
+      energetic: {
+        ingredients: ["quinoa", "spinach", "nuts", "berries", "protein powder", "seeds", "banana", "kale"],
+        cookingStyles: ["power-packed", "raw", "fresh", "smoothie", "protein-rich"],
+        dishTypes: ["salad", "smoothie", "bowl", "wrap", "energy bar"]
+      },
+      relaxed: {
+        ingredients: ["chamomile tea", "honey", "lavender", "mint", "almond milk", "cinnamon", "vanilla"],
+        cookingStyles: ["light", "calming", "soothing", "warm", "gentle"],
+        dishTypes: ["tea", "latte", "infusion", "dessert", "smoothie"]
+      },
+      creative: {
+        ingredients: ["turmeric", "coconut milk", "mango", "chili", "lime", "ginger", "coriander"],
+        cookingStyles: ["spicy", "exotic", "bold", "fusion", "aromatic"],
+        dishTypes: ["curry", "stew", "salad", "tacos", "wrap"]
+      },
+      default: {
+        ingredients: ["bread", "avocado", "egg", "cheese", "tomato", "lettuce", "olive oil"],
+        cookingStyles: ["simple", "quick", "easy", "tasty", "classic"],
+        dishTypes: ["toast", "sandwich", "omelette", "salad", "wrap"]
+      }
     };
 
+    function generateRandom(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function capitalizeFirst(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     function generateRecipe() {
-      const mood = document.getElementById('moodInput').value.trim().toLowerCase();
-      const recipe = recipes[mood] || recipes['default'];
-      document.getElementById('recipeOutput').innerText = recipe;
+      const moodInput = document.getElementById('moodInput');
+      const mood = moodInput.value.trim().toLowerCase();
+      const data = moodData[mood] || moodData['default'];
+
+      // Generate dish name
+      const dishName = `${generateRandom(data.cookingStyles)} ${generateRandom(data.ingredients)} ${generateRandom(data.dishTypes)}`;
+
+      // Generate ingredients list (pick 4 random unique ingredients)
+      const shuffledIngredients = [...data.ingredients].sort(() => 0.5 - Math.random());
+      const ingredients = shuffledIngredients.slice(0, 4);
+
+      // Generate simple steps
+      const steps = [
+        `Prepare the ingredients: ${ingredients.join(", ")}.`,
+        `Cook them in a ${generateRandom(data.cookingStyles)} style until perfect.`,
+        `Serve the delicious ${dishName} hot and enjoy your meal!`
+      ];
+
+      // Build output HTML
+      let output = `<h2>${capitalizeFirst(dishName)}</h2>`;
+      output += `<h3>Ingredients:</h3><ul>`;
+      ingredients.forEach(ing => {
+        output += `<li>${capitalizeFirst(ing)}</li>`;
+      });
+      output += `</ul>`;
+
+      output += `<h3>Steps:</h3><ol>`;
+      steps.forEach(step => {
+        output += `<li>${step}</li>`;
+      });
+      output += `</ol>`;
+
+      // Update DOM
+      const outputDiv = document.getElementById('recipeOutput');
+      outputDiv.innerHTML = output;
+
+      // Accessibility: Announce new recipe
+      outputDiv.setAttribute('aria-live', 'polite');
+      outputDiv.setAttribute('aria-atomic', 'true');
     }
   </script>
 </body>
 </html>
+
